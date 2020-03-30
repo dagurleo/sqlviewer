@@ -25,8 +25,8 @@ export class Db extends vscode.TreeItem {
     return this.label
   }
   iconPath = {
-    light: path.join(__filename, '..', '..', 'media', 'db.png'),
-    dark: path.join(__filename, '..', '..', 'media', 'db.png')
+    light: path.join(__filename, '..', '..', 'media', 'layers.svg'),
+    dark: path.join(__filename, '..', '..', 'media', 'layers.svg')
   }
 
   contextValue = 'db'

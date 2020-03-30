@@ -56,7 +56,7 @@
         {
           "id": "psqlviewer",
           "title": "PostgreSQL Viewer",
-          "icon": "media/db.png"
+          "icon": "media/layers.svg"
         }
       ]
     },
