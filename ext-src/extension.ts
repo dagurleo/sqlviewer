@@ -3,6 +3,7 @@
 import * as vscode from 'vscode'
 import * as path from 'path'
 import * as fs from 'fs'
+import ReactPanel from './ReactPanel'
 import DbConnection from './dbConnection'
 import { TableProvider } from './tableProvider'
 import { DbTreeProvider } from './DbTreeProvider'
@@ -71,7 +72,6 @@ export function activate(context: vscode.ExtensionContext) {
           console.log(command.uri)
           currentDb = new DbConnection({ uri: command.uri })
           const tables = await currentDb.getTables()
-          console.log()
 
           console.log(tables)
           dbTreeProvider.refresh(command.name, tables)
@@ -84,27 +84,31 @@ export function activate(context: vscode.ExtensionContext) {
   )
 
   const openWebView = () => {
-    currentPanel = vscode.window.createWebviewPanel(
-      'psqlviewer',
-      'SQL Viewer',
-      vscode.ViewColumn.One,
-      { enableScripts: true }
-    )
-    const filePath: vscode.Uri = vscode.Uri.file(
-      path.join(context.extensionPath, 'src', 'webview', 'index.html')
-    )
-    const onDiskPath = vscode.Uri.file(
-      path.join(context.extensionPath, 'src', 'webview')
-    )
-    const scriptSrc = currentPanel.webview.asWebviewUri(onDiskPath)
-    currentPanel.webview.html = getWebviewContent(scriptSrc)
-    currentPanel.onDidDispose(
-      () => {
-        currentPanel = undefined
-      },
-      undefined,
-      context.subscriptions
-    )
+    console.log('Opening webview wow')
+
+    ReactPanel.createOrShow(context.extensionPath)
+
+    // currentPanel = vscode.window.createWebviewPanel(
+    //   'psqlviewer',
+    //   'SQL Viewer',
+    //   vscode.ViewColumn.One,
+    //   { enableScripts: true }
+    // )
+    // const filePath: vscode.Uri = vscode.Uri.file(
+    //   path.join(context.extensionPath, 'src', 'webview', 'index.html')
+    // )
+    // const onDiskPath = vscode.Uri.file(
+    //   path.join(context.extensionPath, 'src', 'webview')
+    // )
+    // const scriptSrc = currentPanel.webview.asWebviewUri(onDiskPath)
+    // currentPanel.webview.html = getWebviewContent(scriptSrc)
+    // currentPanel.onDidDispose(
+    //   () => {
+    //     currentPanel = undefined
+    //   },
+    //   undefined,
+    //   context.subscriptions
+    // )
   }
 
   let openTable = vscode.commands.registerCommand(

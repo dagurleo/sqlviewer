@@ -12,7 +12,7 @@
   "activationEvents": [
     "*"
   ],
-  "main": "./out/extension.js",
+  "main": "./build/ext-src/extension.js",
   "contributes": {
     "menus": {
       "view/title": [
@@ -70,17 +70,23 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "yarn run compile",
-    "compile": "tsc -p ./",
-    "lint": "eslint src --ext ts",
-    "watch": "tsc -watch -p ./",
-    "pretest": "yarn run compile && yarn run lint",
-    "test": "node ./out/test/runTest.js"
+    "vscode:prepublish": "tsc -p tsconfig.extension.json",
+    "compile": "tsc -p ./tsconfig.extension.json",
+    "lint": "eslint ext-src --ext ts",
+    "watch": "tsc -watch -p ./tsconfig.extension.json",
+    "pretest": "yarn run vscode:prepublish && yarn run lint",
+    "test": "node ./out/test/runTest.js",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test-webview": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/mocha": "^7.0.1",
     "@types/node": "^12.11.7",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
     "@types/vscode": "^1.43.0",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
@@ -92,6 +98,22 @@
   },
   "dependencies": {
     "@types/pg": "^7.14.3",
-    "pg": "^7.18.2"
+    "pg": "^7.18.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "rewire": "^5.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
