@@ -60,7 +60,6 @@ export default class DbConnection {
         })
       }
       if (client) {
-        console.log(client)
         try {
           await client.connect()
           const result = await client.query('SELECT NOW()')
@@ -80,13 +79,6 @@ export default class DbConnection {
       console.log('Error in connecting to db', error)
       return false
     }
-  }
-
-  static parseUri(uri: string) {
-    const split = uri.split(
-      /^((postgres):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
-    )
-    console.log(split)
   }
 }
 

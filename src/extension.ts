@@ -68,12 +68,9 @@ export function activate(context: vscode.ExtensionContext) {
       try {
         const command: any = args.command ? args?.command?.arguments[0] : args
         if (command?.uri) {
-          console.log(command.uri)
           currentDb = new DbConnection({ uri: command.uri })
           const tables = await currentDb.getTables()
-          console.log()
 
-          console.log(tables)
           dbTreeProvider.refresh(command.name, tables)
         }
       } catch (error) {
@@ -97,7 +94,7 @@ export function activate(context: vscode.ExtensionContext) {
       path.join(context.extensionPath, 'src', 'webview')
     )
     const scriptSrc = currentPanel.webview.asWebviewUri(onDiskPath)
-    currentPanel.webview.html = getWebviewContent(scriptSrc)
+    currentPanel.webview.html = getHtmlForWebview()
     currentPanel.onDidDispose(
       () => {
         currentPanel = undefined
@@ -111,7 +108,6 @@ export function activate(context: vscode.ExtensionContext) {
     'extension.openTable',
     async (args: any) => {
       if (args?.schemaname && args?.tablename) {
-        console.log(args)
         if (currentDb) {
           const result = await currentDb.selectAllFromTable(
             args.schemaname,
@@ -120,9 +116,11 @@ export function activate(context: vscode.ExtensionContext) {
           if (!currentPanel) {
             openWebView()
           }
+
           if (result && currentPanel) {
-            console.log('Sending result to webview', currentPanel)
-            currentPanel?.webview.postMessage({
+            console.log('sending data', result)
+
+            currentPanel.webview.postMessage({
               type: 'table-change',
               data: result
             })
@@ -175,6 +173,23 @@ export function activate(context: vscode.ExtensionContext) {
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
+
+function getHtmlForWebview(): string {
+  try {
+    const reactApplicationHtmlFilename = 'dist/index.html'
+    const htmlPath = path.join(
+      __dirname,
+      '..',
+      'webview',
+      reactApplicationHtmlFilename
+    )
+    const html = fs.readFileSync(htmlPath).toString()
+
+    return html
+  } catch (e) {
+    return `Error getting HTML for web view: ${e}`
+  }
+}
 
 function getWebviewContent(diskPath: vscode.Uri) {
   return `<!DOCTYPE html>
