@@ -1,0 +1,7 @@
+postgres://USERNAME:PASSWORD@babar.elephantsql.com:5432/jszlmeae
+postgres://admin:@localhost:5432/forumstest
+
+//     user: 'admin',
+//     host: 'localhost',
+//     database: 'forumstest',
+//     port: 5432

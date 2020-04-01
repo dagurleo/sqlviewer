@@ -5,6 +5,10 @@ import { AppContainer, TabContainer } from './components'
 import { TableContainer } from './components/TableContainer'
 
 // import InteractorFactory from './Interaction/InteractorFactory'
+
+window.onunload = () => {
+  console.log('IM UNLOADING')
+}
 function tryAcquireVsCodeApi() {
   try {
     return acquireVsCodeApi()
@@ -31,7 +35,7 @@ const App = () => {
   }, [])
   return (
     <AppContainer>
-      <TabContainer />
+      {/* <TabContainer /> */}
       <TableContainer data={tableData} />
     </AppContainer>
   )
